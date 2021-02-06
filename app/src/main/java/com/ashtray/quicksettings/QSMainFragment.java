@@ -11,8 +11,12 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
+
+import java.util.ArrayList;
 
 public class QSMainFragment extends Fragment {
 
@@ -48,7 +52,15 @@ public class QSMainFragment extends Fragment {
     }
 
     private void drawFragmentForTheFirstTime() {
+        ArrayList<QSItem> items = new ArrayList<>();
+        for(int i=0;i<50;i++)
+            items.add(new QSItem());
 
+        QSCurrentListAdapter adapter = new QSCurrentListAdapter(getContext(), items);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
+        layoutManager.setReverseLayout(true);
+        binding.rvCurrentItems.setLayoutManager(layoutManager);
+        binding.rvCurrentItems.setAdapter(adapter);
     }
 
     private void addHandlersAndListeners() {
