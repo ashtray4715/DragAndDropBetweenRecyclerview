@@ -72,7 +72,7 @@ public class QSMainFragment extends Fragment {
         }
 
         QSCurrentListAdapter adapter = new QSCurrentListAdapter(getContext(), items);
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
         binding.rvCurrentItems.setAdapter(adapter);

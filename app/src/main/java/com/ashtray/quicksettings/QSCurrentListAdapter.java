@@ -83,7 +83,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             Log.d(TAG, "deleteItem: position = " + position);
             if(position != -1) {
                 items.remove(position);
-                notifyItemRemoved(position);
+                notifyDataSetChanged();
             }
         }
     }
