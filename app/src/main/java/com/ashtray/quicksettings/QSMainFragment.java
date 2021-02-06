@@ -1,5 +1,6 @@
 package com.ashtray.quicksettings;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -26,9 +28,19 @@ public class QSMainFragment extends Fragment {
     private QSViewModel viewModel;
 
     private void updateActionBar(String title, boolean showBackButton) {
-        getActivity().setTitle(title);
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(showBackButton);
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(showBackButton);
+        Activity activity = getActivity();
+        if(activity != null) {
+            activity.setTitle(title);
+            ActionBar actionBar = ((MainActivity) getActivity()).getSupportActionBar();
+            if(actionBar != null) {
+                actionBar.setDisplayHomeAsUpEnabled(showBackButton);
+                actionBar.setDisplayShowHomeEnabled(showBackButton);
+            }else {
+                Log.e(TAG, "updateActionBar: action bar is null");
+            }
+        } else {
+            Log.e(TAG, "updateActionBar: activity is null");
+        }
     }
 
     @Nullable
