@@ -54,6 +54,14 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items;
     }
 
+    public void printTheNameOneByOne() {
+        StringBuilder sb = new StringBuilder();
+        for(QSItem item: items) {
+            sb.append(item.name).append(", ");
+        }
+        Log.d(TAG, "printTheNameOneByOne: " + sb.toString());
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imageView;
