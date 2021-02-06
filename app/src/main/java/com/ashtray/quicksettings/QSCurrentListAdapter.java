@@ -50,6 +50,10 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         notifyDataSetChanged();
     }
 
+    public ArrayList<QSItem> getUpdatedItemList() {
+        return items;
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView imageView;
@@ -60,7 +64,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
 
-            this.imageView.setOnClickListener(v -> deleteItem());
+            this.imageView.setOnClickListener(v -> Log.d(TAG, "ViewHolder: selected item -> " + textView.getText().toString()));
         }
 
         public void updateViewOnBind(Context context, int position) {

@@ -13,19 +13,24 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class QSMainFragment extends Fragment {
 
     private final String TAG = "[QSMainFragment]";
+    private static final int DRAG_DIRECTION = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END;
 
     private QsMainFragmentBinding binding;
     private QSViewModel viewModel;
+
+    private QSCurrentListAdapter currentListAdapter;
 
     private void updateActionBar(String title, boolean showBackButton) {
         Activity activity = getActivity();
@@ -71,11 +76,14 @@ public class QSMainFragment extends Fragment {
             items.add(item);
         }
 
-        QSCurrentListAdapter adapter = new QSCurrentListAdapter(getContext(), items);
+        currentListAdapter = new QSCurrentListAdapter(getContext(), items);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
-        binding.rvCurrentItems.setAdapter(adapter);
+        binding.rvCurrentItems.setAdapter(currentListAdapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
     }
 
     private void addHandlersAndListeners() {
@@ -106,4 +114,22 @@ public class QSMainFragment extends Fragment {
         // update current lists
         endEditMode();
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
+            int fromPosition = svh.getAdapterPosition();
+            int toPosition = tvh.getAdapterPosition();
+            Collections.swap(currentListAdapter.getUpdatedItemList(), fromPosition, toPosition);
+            //rv.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            currentListAdapter.notifyItemMoved(fromPosition, toPosition);
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Log.d(TAG, "onSwiped: direction -> " + direction);
+        }
+    };
+
 }
