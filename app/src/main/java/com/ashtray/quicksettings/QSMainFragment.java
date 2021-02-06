@@ -65,8 +65,11 @@ public class QSMainFragment extends Fragment {
 
     private void drawFragmentForTheFirstTime() {
         ArrayList<QSItem> items = new ArrayList<>();
-        for(int i=0;i<50;i++)
-            items.add(new QSItem());
+        for(int i=0;i<25;i++) {
+            QSItem item = new QSItem();
+            item.name = String.valueOf(i);
+            items.add(item);
+        }
 
         QSCurrentListAdapter adapter = new QSCurrentListAdapter(getContext(), items);
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, LinearLayoutManager.VERTICAL);

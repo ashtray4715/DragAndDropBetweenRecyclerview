@@ -13,4 +13,14 @@
         android:src="@drawable/ic_launcher_background"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerInParent="true"
+        android:text="A"
+        android:gravity="center"
+        android:textSize="10sp"
+        tools:ignore="HardcodedText,SmallSp" />
+
 </RelativeLayout>
