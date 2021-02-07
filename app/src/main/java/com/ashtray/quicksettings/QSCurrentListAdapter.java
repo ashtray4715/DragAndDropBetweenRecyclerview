@@ -37,6 +37,9 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         if (viewType == QSConstant.QSItem_TYPE_HEADER) {
             View v = new View(context);
             return new HeaderViewHolder(v);
+        } else if(viewType == QSConstant.QSItem_TYPE_DUMMY) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_dummy_item, parent, false);
+            return new DummyViewHolder(v);
         } else {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_current_item, parent, false);
             return new ItemViewHolder(v);
@@ -139,6 +142,18 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
             this.itemView.setLayoutParams(layoutParams);
             this.itemView.setBackgroundColor(Color.RED);
+        }
+    }
+
+    static class DummyViewHolder extends MyViewHolder {
+
+        public DummyViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void updateViewOnBind(Context context, int position) {
+
         }
     }
 
