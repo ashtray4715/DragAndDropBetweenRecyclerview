@@ -115,21 +115,24 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         if(dragEnteredIntoRecyclerView != DRAG_ENTERED_INTO_CURRENT_ITEM_RECYCLE_VIEW) {
             return;
         }
+        if(dragStartedFromCurrentItemList) {
+            handleDragLocationCurrentToCurrent(v, event);
+        } else {
+            handleDragLocationAvailableToCurrent(v, event);
+        }
+    }
+    private void handleDragLocationCurrentToCurrent(View v, DragEvent event) {
         RecyclerView recyclerView = (RecyclerView) v;
         View selectedView = (View) event.getLocalState();
-
-        if(dragStartedFromCurrentItemList) {
-            View onTopOfView = recyclerView.findChildViewUnder(event.getX(), event.getY());
-            if(onTopOfView == null) {
-                return;
-            }
-            int currentPosition = recyclerView.getChildAdapterPosition(onTopOfView);
-            //Log.d(TAG, "handleDragLocation: currentPosition " + currentPosition + "currentRecyclerView : " + currentItemRecyclerView);
-        } else
-
-            {
-            //do nothing cause dragging is not possible
-            //from available list to available list
+        View onTopOfView = recyclerView.findChildViewUnder(event.getX(), event.getY());
+        if(onTopOfView == null) {
+            return;
         }
+        int currentPosition = recyclerView.getChildAdapterPosition(onTopOfView);
+        //Log.d(TAG, "handleDragLocation: currentPosition " + currentPosition + "currentRecyclerView : " + currentItemRecyclerView);
+    }
+
+    private void handleDragLocationAvailableToCurrent(View v, DragEvent event) {
+
     }
 }
