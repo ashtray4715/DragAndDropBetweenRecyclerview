@@ -1,10 +1,13 @@
 package com.ashtray.quicksettings;
 
+import android.content.ClipData;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +54,10 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
             super(itemView);
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
+
+            RelativeLayout rootLayout = itemView.findViewById(R.id.qs_available_item_root_layout);
+            rootLayout.setOnLongClickListener(new LongClickExpert());
+            rootLayout.setOnDragListener(new QSDragListener());
         }
 
         public void updateViewOnBind(Context context, int position) {
@@ -59,6 +66,20 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
                     .apply(new RequestOptions().placeholder(R.drawable.ic_launcher_background))
                     .into(this.imageView);
             this.textView.setText(items.get(position).name);
+        }
+    }
+
+    static class LongClickExpert implements View.OnLongClickListener {
+        @Override
+        public boolean onLongClick(View v) {
+            ClipData clipData = ClipData.newPlainText("", "");
+            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                v.startDragAndDrop(clipData, shadowBuilder, v, 0);
+            }else {
+                v.startDrag(clipData, shadowBuilder, v, 0);
+            }
+            return true;
         }
     }
 }
