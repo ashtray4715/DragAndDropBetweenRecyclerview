@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -28,6 +29,7 @@ public class QSMainFragment extends Fragment {
     private QSViewModel viewModel;
 
     private QSCurrentListAdapter currentListAdapter;
+    private QSAvailableListAdapter availableListAdapter;
 
     private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
         @Override
@@ -83,14 +85,18 @@ public class QSMainFragment extends Fragment {
     }
 
     private void drawFragmentForTheFirstTime() {
-        currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedList());
+        currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
         binding.rvCurrentItems.setAdapter(currentListAdapter);
-
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
+
+        availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
+        LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        binding.rvAvailableItems.setLayoutManager(llManager);
+        binding.rvAvailableItems.setAdapter(availableListAdapter);
     }
 
     private void addHandlersAndListeners() {
