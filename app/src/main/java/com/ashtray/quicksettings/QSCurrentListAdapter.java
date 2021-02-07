@@ -81,6 +81,14 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return true;
     }
 
+    public void addDummyCurrentItem(int atPosition) {
+        QSItem item = new QSItem();
+        item.type = QSConstant.QSItem_TYPE_DUMMY;
+        item.name = "D";
+        items.add(atPosition, item);
+        notifyDataSetChanged();
+    }
+
     public void printTheNameOneByOne() {
         StringBuilder sb = new StringBuilder();
         for(QSItem item: items) {

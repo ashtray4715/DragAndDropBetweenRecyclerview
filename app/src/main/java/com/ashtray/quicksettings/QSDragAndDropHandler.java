@@ -13,12 +13,15 @@ public class QSDragAndDropHandler implements View.OnDragListener {
     private static final int DRAG_ENTERED_INTO_CURRENT_ITEM_RECYCLE_VIEW = 1;
     private static final int DRAG_ENTERED_INTO_AVAILABLE_ITEM_RECYCLE_VIEW = 0;
     private static final int RECYCLER_VIEW_ID_NOT_FOUND = -1;
+    private static final int DUMMY_ITEM_NOT_INSERTED = -1;
 
     private int currentItemRecyclerViewId = RECYCLER_VIEW_ID_NOT_FOUND;
     private int availableItemRecyclerViewId = RECYCLER_VIEW_ID_NOT_FOUND;
 
     private boolean dragStartedFromCurrentItemList = false;
     private boolean dragEnteredCallFirstTime = false;
+
+    private int dummyItemInsertedPosition = DUMMY_ITEM_NOT_INSERTED;
 
     /**
      * -1 = doesn't enter anywhere (DRAG_ENTERED_INTO_NO_WHERE)
@@ -59,6 +62,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         availableItemRecyclerViewId = RECYCLER_VIEW_ID_NOT_FOUND;
         dragEnteredCallFirstTime = true;
         dragEnteredIntoRecyclerView = DRAG_ENTERED_INTO_NO_WHERE;
+        dummyItemInsertedPosition = DUMMY_ITEM_NOT_INSERTED;
 
         if(event.getClipDescription().getLabel().toString().equals(QSConstant.QS_LABEL_CURRENT_ITEM)) {
             dragStartedFromCurrentItemList = true;
@@ -121,6 +125,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             handleDragLocationAvailableToCurrent(v, event);
         }
     }
+
     private void handleDragLocationCurrentToCurrent(View v, DragEvent event) {
         RecyclerView recyclerView = (RecyclerView) v;
         View selectedView = (View) event.getLocalState();
@@ -129,7 +134,12 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             return;
         }
         int currentPosition = recyclerView.getChildAdapterPosition(onTopOfView);
-        //Log.d(TAG, "handleDragLocation: currentPosition " + currentPosition + "currentRecyclerView : " + currentItemRecyclerView);
+        if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
+
+        } else if(dummyItemInsertedPosition == currentPosition) {
+
+        }
+
     }
 
     private void handleDragLocationAvailableToCurrent(View v, DragEvent event) {
