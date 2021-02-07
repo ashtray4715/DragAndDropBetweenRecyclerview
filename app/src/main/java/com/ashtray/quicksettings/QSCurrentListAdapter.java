@@ -81,12 +81,41 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return true;
     }
 
-    public void addDummyCurrentItem(int atPosition) {
+    public void handleAddItem(int atPosition) {
         QSItem item = new QSItem();
         item.type = QSConstant.QSItem_TYPE_DUMMY;
         item.name = "D";
-        items.add(atPosition, item);
+        if(items.size() > atPosition) {
+            items.add(atPosition, item);
+        } else {
+            items.add(item);
+        }
         notifyDataSetChanged();
+    }
+
+    public void handleAddItem(int draggableItemPosition, QSItem draggableItem) {
+        if(items.size() > draggableItemPosition) {
+            items.add(draggableItemPosition, draggableItem);
+        } else {
+            items.add(draggableItem);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void handleRemoveItem(int atPosition) {
+        if(items.size() > atPosition) {
+            items.remove(atPosition);
+            notifyDataSetChanged();
+        }
+    }
+
+    public void handleReplaceItem(int position, QSItem item) {
+        if(items.size() > position) {
+            items.get(position).type = item.type;
+            items.get(position).name = item.name;
+            items.get(position).imageUrl = item.imageUrl;
+            notifyItemChanged(position);
+        }
     }
 
     public void printTheNameOneByOne() {
@@ -95,6 +124,10 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             sb.append(item.name).append(", ");
         }
         Log.d(TAG, "printTheNameOneByOne: " + sb.toString());
+    }
+
+    public QSItem getItemFromPosition(int position) {
+        return items.get(position);
     }
 
     class ItemViewHolder extends MyViewHolder {
