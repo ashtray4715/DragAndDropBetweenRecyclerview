@@ -54,8 +54,7 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
             this.textView = itemView.findViewById(R.id.item_text);
 
             RelativeLayout rootLayout = itemView.findViewById(R.id.qs_available_item_root_layout);
-            rootLayout.setOnLongClickListener(new QSLongClickHandler());
-            //rootLayout.setOnDragListener(new QSDragAndDropHandler());
+            rootLayout.setOnLongClickListener(new QSLongClickHandler(QSConstant.QS_LABEL_AVAILABLE_ITEM));
         }
 
         public void updateViewOnBind(Context context, int position) {

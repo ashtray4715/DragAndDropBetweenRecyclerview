@@ -4,8 +4,12 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 public class QSDragAndDropHandler implements View.OnDragListener {
     private static final String TAG = "[QSDragListener]";
+
+    private boolean dragStartFromCurrentItemList = false;
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
@@ -36,6 +40,16 @@ public class QSDragAndDropHandler implements View.OnDragListener {
 
     private void handleDragStarted(View v, DragEvent event) {
         Log.d(TAG, "handleDragStarted: " + event.getX() + ", " + event.getY());
+
+        if(event.getClipDescription().getLabel().toString().equals(QSConstant.QS_LABEL_CURRENT_ITEM)) {
+            dragStartFromCurrentItemList = true;
+        } else if(event.getClipDescription().getLabel().toString().equals(QSConstant.QS_LABEL_AVAILABLE_ITEM)) {
+            dragStartFromCurrentItemList = false;
+        }
+
+        RecyclerView fromRecyclerView = (RecyclerView) v;
+        View selectedView = (View) event.getLocalState();
+        Log.d(TAG, "handleDragStarted: -> " + fromRecyclerView.getChildAdapterPosition(selectedView));
     }
 
     private void handleDragEntered(View v, DragEvent event) {
