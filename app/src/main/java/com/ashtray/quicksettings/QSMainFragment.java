@@ -30,6 +30,7 @@ public class QSMainFragment extends Fragment {
 
     private QSCurrentListAdapter currentListAdapter;
     private QSAvailableListAdapter availableListAdapter;
+    private QSDragAndDropHandler dragAndDropHandler;
 
     private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
         @Override
@@ -82,6 +83,7 @@ public class QSMainFragment extends Fragment {
 
     private void initializeVariablesAndComponents() {
         updateActionBar("Main", true);
+        dragAndDropHandler = new QSDragAndDropHandler();
     }
 
     private void drawFragmentForTheFirstTime() {
@@ -92,13 +94,13 @@ public class QSMainFragment extends Fragment {
         binding.rvCurrentItems.setAdapter(currentListAdapter);
         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         //itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
-        binding.rvCurrentItems.setOnDragListener(new QSDragAndDropHandler());
+        binding.rvCurrentItems.setOnDragListener(dragAndDropHandler);
 
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         binding.rvAvailableItems.setLayoutManager(llManager);
         binding.rvAvailableItems.setAdapter(availableListAdapter);
-        binding.rvAvailableItems.setOnDragListener(new QSDragAndDropHandler());
+        binding.rvAvailableItems.setOnDragListener(dragAndDropHandler);
     }
 
     private void addHandlersAndListeners() {
