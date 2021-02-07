@@ -96,7 +96,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             this.textView = itemView.findViewById(R.id.item_text);
 
             RelativeLayout relativeLayout = this.itemView.findViewById(R.id.qs_current_item_root_layout);
-            relativeLayout.setOnDragListener(new QSDragAndDropHandler());
+            //relativeLayout.setOnDragListener(new QSDragAndDropHandler());
             relativeLayout.setOnLongClickListener(new QSLongClickHandler());
         }
 

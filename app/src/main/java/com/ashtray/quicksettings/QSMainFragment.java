@@ -92,11 +92,13 @@ public class QSMainFragment extends Fragment {
         binding.rvCurrentItems.setAdapter(currentListAdapter);
         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         //itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
+        binding.rvCurrentItems.setOnDragListener(new QSDragAndDropHandler());
 
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         binding.rvAvailableItems.setLayoutManager(llManager);
         binding.rvAvailableItems.setAdapter(availableListAdapter);
+        binding.rvAvailableItems.setOnDragListener(new QSDragAndDropHandler());
     }
 
     private void addHandlersAndListeners() {
