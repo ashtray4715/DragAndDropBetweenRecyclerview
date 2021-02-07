@@ -1,6 +1,7 @@
 package com.ashtray.quicksettings;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,12 +16,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdapter.ViewHolder> {
+public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdapter.MyViewHolder> {
 
     private static final String TAG = "[QSCurrentListAdapter]";
 
-    private ArrayList<QSItem> items;
+    private final ArrayList<QSItem> items;
     private final Context context;
 
     public QSCurrentListAdapter(Context context, ArrayList<QSItem> items) {
@@ -30,13 +32,18 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_current_item, parent, false);
-        return new ViewHolder(v);
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == QSConstant.QSItem_TYPE_HEADER) {
+            View v = new View(context);
+            return new HeaderViewHolder(v);
+        } else {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_current_item, parent, false);
+            return new ItemViewHolder(v);
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.updateViewOnBind(context, position);
     }
 
@@ -45,13 +52,17 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items.size();
     }
 
-    public void updateItemsList(ArrayList<QSItem> items) {
-        this.items = items;
-        notifyDataSetChanged();
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).type;
     }
 
-    public ArrayList<QSItem> getUpdatedItemList() {
-        return items;
+    public boolean handleMoveItem(int fromPosition, int toPosition) {
+        Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
+        Collections.swap(items, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        printTheNameOneByOne();
+        return true;
     }
 
     public void printTheNameOneByOne() {
@@ -62,12 +73,11 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         Log.d(TAG, "printTheNameOneByOne: " + sb.toString());
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
+    class ItemViewHolder extends MyViewHolder {
         private final ImageView imageView;
         private final TextView textView;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
@@ -98,5 +108,31 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
                 notifyDataSetChanged();
             }
         }
+
+    }
+
+    static class HeaderViewHolder extends MyViewHolder {
+        private final View itemView;
+
+        public HeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+            this.itemView = itemView;
+        }
+
+        @Override
+        public void updateViewOnBind(Context context, int position) {
+            int width = 50, height = (position == 0) ? 90 : (position == 1) ? 8 : 91;
+            ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(width, height);
+            this.itemView.setLayoutParams(layoutParams);
+            this.itemView.setBackgroundColor(Color.RED);
+        }
+    }
+
+    abstract static class MyViewHolder extends RecyclerView.ViewHolder {
+        public MyViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        public abstract void updateViewOnBind(Context context, int position);
     }
 }

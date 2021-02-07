@@ -69,14 +69,7 @@ public class QSMainFragment extends Fragment {
     }
 
     private void drawFragmentForTheFirstTime() {
-        ArrayList<QSItem> items = new ArrayList<>();
-        for(int i=0;i<7;i++) {
-            QSItem item = new QSItem();
-            item.name = String.valueOf(i);
-            items.add(item);
-        }
-
-        currentListAdapter = new QSCurrentListAdapter(getContext(), items);
+        currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedList());
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
@@ -106,9 +99,8 @@ public class QSMainFragment extends Fragment {
     public void userWantToApplyChanges(View v) {
         Log.d(TAG, "userWantToApplyChanges()");
         // update list in view model
-        ArrayList<QSItem> updateList = currentListAdapter.getUpdatedItemList();
-        currentListAdapter.updateItemsList(updateList);
         currentListAdapter.notifyDataSetChanged();
+        currentListAdapter.printTheNameOneByOne();
         endEditMode();
     }
 
@@ -121,14 +113,7 @@ public class QSMainFragment extends Fragment {
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
-            int fromPosition = svh.getAdapterPosition();
-            int toPosition = tvh.getAdapterPosition();
-            Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
-            Collections.swap(currentListAdapter.getUpdatedItemList(), fromPosition, toPosition);
-            //rv.getAdapter().notifyItemMoved(fromPosition, toPosition);
-            currentListAdapter.notifyItemMoved(fromPosition, toPosition);
-            currentListAdapter.printTheNameOneByOne();
-            return false;
+            return currentListAdapter.handleMoveItem(svh.getAdapterPosition(), tvh.getAdapterPosition());
         }
 
         @Override
