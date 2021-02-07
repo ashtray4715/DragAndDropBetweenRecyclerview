@@ -19,9 +19,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class QSMainFragment extends Fragment {
 
     private final String TAG = "[QSMainFragment]";
@@ -31,6 +28,23 @@ public class QSMainFragment extends Fragment {
     private QSViewModel viewModel;
 
     private QSCurrentListAdapter currentListAdapter;
+
+    private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
+            return currentListAdapter.handleMoveItem(svh, tvh);
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            Log.d(TAG, "onSwiped: direction -> " + direction);
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return viewHolder.getItemViewType() == QSConstant.QSItem_TYPE_HEADER ? 0 : makeMovementFlags(DRAG_DIRECTION, 0);
+        }
+    };
 
     private void updateActionBar(String title, boolean showBackButton) {
         Activity activity = getActivity();
@@ -92,7 +106,7 @@ public class QSMainFragment extends Fragment {
     }
 
     private void endEditMode() {
-        updateActionBar("Edit Main", false);
+        updateActionBar("Edit Main", true);
         binding.changesApplyOrCancelView.setVisibility(View.GONE);
     }
 
@@ -109,22 +123,5 @@ public class QSMainFragment extends Fragment {
         // update current lists
         endEditMode();
     }
-
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
-            return currentListAdapter.handleMoveItem(svh, tvh);
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            Log.d(TAG, "onSwiped: direction -> " + direction);
-        }
-
-        @Override
-        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-            return viewHolder.getItemViewType() == QSConstant.QSItem_TYPE_HEADER ? 0 : makeMovementFlags(DRAG_DIRECTION, 0);
-        }
-    };
 
 }
