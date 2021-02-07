@@ -63,7 +63,15 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         }
         int fromPosition = source.getAdapterPosition(), toPosition = destination.getAdapterPosition();
         Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
-        Collections.swap(items, fromPosition, toPosition);
+        if(fromPosition < toPosition) {
+            for(int i=fromPosition; i<toPosition; i++) {
+                Collections.swap(items, i, i+1);
+            }
+        } else {
+            for(int i=fromPosition; i>toPosition; i--) {
+                Collections.swap(items, i, i-1);
+            }
+        }
         notifyItemMoved(fromPosition, toPosition);
         printTheNameOneByOne();
         return true;
