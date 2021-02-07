@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
-public class QSDragListener implements View.OnDragListener {
+public class QSDragAndDropHandler implements View.OnDragListener {
     private static final String TAG = "[QSDragListener]";
 
     @Override
@@ -35,26 +35,26 @@ public class QSDragListener implements View.OnDragListener {
     }
 
     private void handleDragStarted(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragStarted: " + event.getX() + ", " + event.getY());
     }
 
     private void handleDragEntered(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragEntered: " + event.getX() + ", " + event.getY());
     }
 
     private void handleDragExited(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragExited: " + event.getX() + ", " + event.getY());
     }
 
     private void handleDragDropped(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragDropped: " + event.getX() + ", " + event.getY());
     }
 
     private void handleDragEnded(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragEnded: " + event.getX() + ", " + event.getY());
     }
 
     private void handleDragLocation(View v, DragEvent event) {
-
+        Log.d(TAG, "handleDragLocation: " + event.getX() + ", " + event.getY());
     }
 }

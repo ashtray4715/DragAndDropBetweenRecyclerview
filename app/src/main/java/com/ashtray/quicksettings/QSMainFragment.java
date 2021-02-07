@@ -90,8 +90,8 @@ public class QSMainFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
         binding.rvCurrentItems.setAdapter(currentListAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
+        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        //itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
 
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);

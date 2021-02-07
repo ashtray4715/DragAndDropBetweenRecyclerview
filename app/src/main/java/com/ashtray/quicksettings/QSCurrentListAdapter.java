@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -94,7 +95,9 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
 
-            this.imageView.setOnClickListener(v -> Log.d(TAG, "ViewHolder: selected item -> " + textView.getText().toString()));
+            RelativeLayout relativeLayout = this.itemView.findViewById(R.id.qs_current_item_root_layout);
+            relativeLayout.setOnDragListener(new QSDragAndDropHandler());
+            relativeLayout.setOnLongClickListener(new QSLongClickHandler());
         }
 
         public void updateViewOnBind(Context context, int position) {
