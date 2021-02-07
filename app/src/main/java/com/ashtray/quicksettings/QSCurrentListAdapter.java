@@ -57,7 +57,11 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items.get(position).type;
     }
 
-    public boolean handleMoveItem(int fromPosition, int toPosition) {
+    public boolean handleMoveItem(RecyclerView.ViewHolder source, RecyclerView.ViewHolder destination) {
+        if (source.getItemViewType() != destination.getItemViewType()) {
+            return false;
+        }
+        int fromPosition = source.getAdapterPosition(), toPosition = destination.getAdapterPosition();
         Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
         Collections.swap(items, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);

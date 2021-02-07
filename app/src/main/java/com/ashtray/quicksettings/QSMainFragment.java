@@ -113,12 +113,17 @@ public class QSMainFragment extends Fragment {
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
         @Override
         public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
-            return currentListAdapter.handleMoveItem(svh.getAdapterPosition(), tvh.getAdapterPosition());
+            return currentListAdapter.handleMoveItem(svh, tvh);
         }
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             Log.d(TAG, "onSwiped: direction -> " + direction);
+        }
+
+        @Override
+        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+            return viewHolder.getItemViewType() == QSConstant.QSItem_TYPE_HEADER ? 0 : makeMovementFlags(DRAG_DIRECTION, 0);
         }
     };
 
