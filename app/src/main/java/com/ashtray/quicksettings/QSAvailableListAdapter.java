@@ -16,7 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 
-public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableListAdapter.ViewHolder> {
+public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableListAdapter.BaseViewHolder> {
 
     private final Context context;
     private final ArrayList<QSItem> items;
@@ -28,14 +28,21 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.qs_available_item, parent, false);
-        return new ViewHolder(v);
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == QSConstant.QSItem_TYPE_DUMMY) {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View v = inflater.inflate(R.layout.qs_dummy_item, parent, false);
+            return new DummyViewHolder(v);
+        } else {
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            View v = inflater.inflate(R.layout.qs_available_item, parent, false);
+            return new ItemViewHolder(v);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         holder.updateViewOnBind(context, position);
     }
 
@@ -49,18 +56,27 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
     }
 
     public void handleReplaceWithDummyItem(int atPosition) {
-
+        if(items.size() > atPosition) {
+            items.get(atPosition).type = QSConstant.QSItem_TYPE_DUMMY;
+            items.get(atPosition).name = "D";
+            notifyItemChanged(atPosition);
+        }
     }
 
-    public void handleReplaceItem(int atPosition, QSItem item) {
-
+    public void handleReplaceItem(int position, QSItem item) {
+        if(items.size() > position) {
+            items.get(position).type = item.type;
+            items.get(position).name = item.name;
+            items.get(position).imageUrl = item.imageUrl;
+            notifyItemChanged(position);
+        }
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ItemViewHolder extends BaseViewHolder {
         private final ImageView imageView;
         private final TextView textView;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
@@ -76,5 +92,25 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
                     .into(this.imageView);
             this.textView.setText(items.get(position).name);
         }
+    }
+
+    static class DummyViewHolder extends BaseViewHolder {
+
+        public DummyViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public void updateViewOnBind(Context context, int position) {
+
+        }
+    }
+
+    abstract static class BaseViewHolder extends RecyclerView.ViewHolder {
+        public BaseViewHolder(@NonNull View itemView) {
+            super(itemView);
+        }
+
+        abstract public void updateViewOnBind(Context context, int position);
     }
 }
