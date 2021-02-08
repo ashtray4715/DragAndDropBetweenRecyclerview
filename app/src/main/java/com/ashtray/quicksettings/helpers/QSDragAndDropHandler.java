@@ -277,6 +277,23 @@ public class QSDragAndDropHandler implements View.OnDragListener {
 
         View onTopOfView = recyclerView.findChildViewUnder(event.getX(), event.getY());
         if(onTopOfView == null) {
+            //when dragged item is inside recycler view but outside of any remained position
+            //then we have add the item to the last but we can have already a dummy item,
+            //in that case we have to first remove the dummy item
+            if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
+                int currentPosition = currentListAdapter.getItemCount();
+                currentListAdapter.handleAddDummyItem(currentPosition);
+                dummyItemInsertedPosition = currentPosition;
+            } else {
+                if(dummyItemInsertedPosition == currentListAdapter.getItemCount() - 1) {
+                    //dummy item already added in the last
+                    return;
+                }
+                currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
+                int currentPosition = currentListAdapter.getItemCount();
+                currentListAdapter.handleAddDummyItem(currentPosition);
+                dummyItemInsertedPosition = currentPosition;
+            }
             return;
         }
 
