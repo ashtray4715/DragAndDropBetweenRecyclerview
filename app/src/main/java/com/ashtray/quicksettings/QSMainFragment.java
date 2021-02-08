@@ -29,6 +29,20 @@ public class QSMainFragment extends Fragment {
     private QSAvailableListAdapter availableListAdapter;
     private QSDragAndDropHandler dragAndDropHandler;
 
+    private QSDragAndDropHandler.CallBacks dragAndDropCallBack = new QSDragAndDropHandler.CallBacks() {
+        @Override
+        public void onStartDragging() {
+            Log.d(TAG, "onStartDragging()");
+            // todo - need to implement
+        }
+
+        @Override
+        public void onStopDragging() {
+            Log.d(TAG, "onStopDragging()");
+            // todo - need to implement
+        }
+    };
+
     private void updateActionBar(String title, boolean showBackButton) {
         Activity activity = getActivity();
         if(activity != null) {
@@ -67,6 +81,7 @@ public class QSMainFragment extends Fragment {
         currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         dragAndDropHandler = new QSDragAndDropHandler(currentListAdapter, availableListAdapter);
+        dragAndDropHandler.setCallBacks(dragAndDropCallBack);
     }
 
     private void drawFragmentForTheFirstTime() {

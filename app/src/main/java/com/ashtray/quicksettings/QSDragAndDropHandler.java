@@ -33,9 +33,27 @@ public class QSDragAndDropHandler implements View.OnDragListener {
     private final QSCurrentListAdapter currentListAdapter;
     private final QSAvailableListAdapter availableListAdapter;
 
+    private CallBacks callBacks;
+
+    public interface CallBacks {
+        /**
+         * This method will invoked when the dragging will be started
+         */
+        void onStartDragging();
+
+        /**
+         * This method will be invoked when the dragging will be stopped
+         */
+        void onStopDragging();
+    }
+
     public QSDragAndDropHandler(QSCurrentListAdapter currentListAdapter, QSAvailableListAdapter availableListAdapter) {
         this.currentListAdapter = currentListAdapter;
         this.availableListAdapter = availableListAdapter;
+    }
+
+    public void setCallBacks(CallBacks callBacks) {
+        this.callBacks = callBacks;
     }
 
     /**
@@ -90,6 +108,10 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             dragStartedFromCurrentItemList = false;
         }
         Log.d(TAG, "handleDragStarted: from " + (dragStartedFromCurrentItemList ? "Current list" : "Available list"));
+
+        if(this.callBacks != null) {
+            this.callBacks.onStartDragging();
+        }
     }
 
     private void handleDragEntered(View v) {
@@ -176,6 +198,10 @@ public class QSDragAndDropHandler implements View.OnDragListener {
                 Log.d(TAG, "handleDragEnded: have draggable item position at " + draggableItemPosition);
                 availableListAdapter.handleReplaceItem(draggableItemPosition, draggableItem);
             }
+        }
+
+        if(this.callBacks != null) {
+            this.callBacks.onStopDragging();
         }
     }
 
