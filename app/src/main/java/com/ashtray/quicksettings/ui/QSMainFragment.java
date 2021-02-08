@@ -103,10 +103,8 @@ public class QSMainFragment extends Fragment {
     }
 
     private void addHandlersAndListeners() {
-        binding.ivApplyChanges.setOnClickListener(this::userWantToApplyChanges);
-        binding.tvApplyChanges.setOnClickListener(this::userWantToApplyChanges);
-        binding.ivCancelChanges.setOnClickListener(this::userWantToCancelChanges);
-        binding.tvCancelChanges.setOnClickListener(this::userWantToCancelChanges);
+        binding.layoutApplyChanges.setOnClickListener(this::userWantToApplyChanges);
+        binding.layoutCancelChanges.setOnClickListener(this::userWantToCancelChanges);
     }
 
     private void startEditMode() {

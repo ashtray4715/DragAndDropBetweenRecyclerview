@@ -78,67 +78,83 @@
             <LinearLayout
                 android:id="@+id/changes_apply_or_cancel_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_below="@id/cv_available_items"
                 android:orientation="horizontal"
                 android:weightSum="2"
-                android:baselineAligned="false"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp">
+                android:baselineAligned="false">
 
                 <!-- cancel changes view -->
                 <RelativeLayout
+                    android:id="@+id/layoutCancelChanges"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                    <ImageView
-                        android:id="@+id/iv_cancel_changes"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_launcher_background"
-                        android:padding="5dp"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:id="@+id/tv_cancel_changes"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_cancel_changes"
-                        android:text="Cancel"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
-                        tools:ignore="HardcodedText" />
+                        android:layout_centerInParent="true"
+                        android:padding="9dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:id="@+id/iv_cancel_changes"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_launcher_background"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/iv_cancel_changes"
+                            android:text="Cancel"
+                            android:textSize="12sp"
+                            android:textColor="#636363"
+                            android:paddingTop="1dp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
                 <!-- apply changes view -->
                 <RelativeLayout
+                    android:id="@+id/layoutApplyChanges"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1">
 
-                    <ImageView
-                        android:id="@+id/iv_apply_changes"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_launcher_background"
-                        android:padding="5dp"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:id="@+id/tv_apply_changes"
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_below="@id/iv_apply_changes"
-                        android:text="Apply"
-                        android:textSize="13sp"
-                        android:textColor="#000000"
-                        tools:ignore="HardcodedText" />
+                        android:layout_centerInParent="true"
+                        android:padding="9dp"
+                        tools:ignore="UselessParent">
+
+                        <ImageView
+                            android:id="@+id/iv_apply_changes"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_launcher_background"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_below="@id/iv_apply_changes"
+                            android:text="Cancel"
+                            android:textSize="12sp"
+                            android:textColor="#636363"
+                            android:paddingTop="1dp"
+                            tools:ignore="HardcodedText" />
+
+                    </RelativeLayout>
 
                 </RelativeLayout>
 
