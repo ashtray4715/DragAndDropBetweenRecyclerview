@@ -151,7 +151,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
                     .load(items.get(position).imageUrl)
                     .apply(new RequestOptions().placeholder(R.drawable.ic_launcher_background))
                     .into(this.imageView);
-            this.textView.setText(items.get(position).name);
+            this.textView.setText(String.valueOf(items.get(position).name.charAt(0)));
         }
 
         public void deleteItem() {
