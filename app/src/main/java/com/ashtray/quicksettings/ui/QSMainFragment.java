@@ -33,7 +33,7 @@ public class QSMainFragment extends Fragment {
     private QSAvailableListAdapter availableListAdapter;
     private QSDragAndDropHandler dragAndDropHandler;
 
-    private QSDragAndDropHandler.CallBacks dragAndDropCallBack = new QSDragAndDropHandler.CallBacks() {
+    private final QSDragAndDropHandler.CallBacks dragAndDropCallBack = new QSDragAndDropHandler.CallBacks() {
         @Override
         public void onStartDragging() {
             Log.d(TAG, "onStartDragging()");
