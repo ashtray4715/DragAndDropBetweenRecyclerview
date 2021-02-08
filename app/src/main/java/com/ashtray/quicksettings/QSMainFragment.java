@@ -13,9 +13,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
@@ -23,7 +21,6 @@ import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
 public class QSMainFragment extends Fragment {
 
     private final String TAG = "[QSMainFragment]";
-    private static final int DRAG_DIRECTION = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END;
 
     private QsMainFragmentBinding binding;
     private QSViewModel viewModel;
@@ -31,23 +28,6 @@ public class QSMainFragment extends Fragment {
     private QSCurrentListAdapter currentListAdapter;
     private QSAvailableListAdapter availableListAdapter;
     private QSDragAndDropHandler dragAndDropHandler;
-
-    private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, 0) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder svh, @NonNull RecyclerView.ViewHolder tvh) {
-            return currentListAdapter.handleMoveItem(svh, tvh);
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            Log.d(TAG, "onSwiped: direction -> " + direction);
-        }
-
-        @Override
-        public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-            return viewHolder.getItemViewType() == QSConstant.QSItem_TYPE_HEADER ? 0 : makeMovementFlags(DRAG_DIRECTION, 0);
-        }
-    };
 
     private void updateActionBar(String title, boolean showBackButton) {
         Activity activity = getActivity();
@@ -83,21 +63,21 @@ public class QSMainFragment extends Fragment {
 
     private void initializeVariablesAndComponents() {
         updateActionBar("Main", true);
-        dragAndDropHandler = new QSDragAndDropHandler();
+
+        currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
+        availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
+        dragAndDropHandler = new QSDragAndDropHandler(currentListAdapter, availableListAdapter);
     }
 
     private void drawFragmentForTheFirstTime() {
-        currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
         binding.rvCurrentItems.setAdapter(currentListAdapter);
-        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        //itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
         binding.rvCurrentItems.setOnDragListener(dragAndDropHandler);
 
-        availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        llManager.setReverseLayout(false);
         binding.rvAvailableItems.setLayoutManager(llManager);
         binding.rvAvailableItems.setAdapter(availableListAdapter);
         binding.rvAvailableItems.setOnDragListener(dragAndDropHandler);

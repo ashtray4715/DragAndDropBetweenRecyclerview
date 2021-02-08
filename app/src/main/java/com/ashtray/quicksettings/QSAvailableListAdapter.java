@@ -51,6 +51,11 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
         return items.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return items.get(position).type;
+    }
+
     public QSItem getItemFromPosition(int position) {
         return items.get(position);
     }
@@ -69,6 +74,13 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
             items.get(position).name = item.name;
             items.get(position).imageUrl = item.imageUrl;
             notifyItemChanged(position);
+        }
+    }
+
+    public void handleRemoveItem(int position) {
+        if(items.size() > position) {
+            items.remove(position);
+            notifyDataSetChanged();
         }
     }
 
