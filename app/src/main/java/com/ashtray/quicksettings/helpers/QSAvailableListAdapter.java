@@ -34,7 +34,7 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == QSConstant.QSItem_TYPE_DUMMY) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            View v = inflater.inflate(R.layout.qs_dummy_item, parent, false);
+            View v = inflater.inflate(R.layout.qs_available_item_dummy, parent, false);
             return new DummyViewHolder(v);
         } else {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());

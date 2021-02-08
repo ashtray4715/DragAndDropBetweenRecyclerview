@@ -24,7 +24,7 @@ public class QSViewModel extends ViewModel {
         ArrayList<QSItem> items = new ArrayList<>();
         for(int i=0;i<20;i++) {
             QSItem item = new QSItem();
-            item.name = String.valueOf(i);
+            item.name = "Play/stop music";
             item.type = QSConstant.QSItem_TYPE_ACTUAL;
             items.add(item);
         }

@@ -80,7 +80,7 @@ public class QSMainFragment extends Fragment {
     }
 
     private void initializeVariablesAndComponents() {
-        updateActionBar("Main", true);
+        updateActionBar("Quick settings", true);
 
         currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());

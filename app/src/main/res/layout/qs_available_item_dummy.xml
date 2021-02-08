@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- this view will be invisible -->
+<!-- but only width is the matter -->
+<!-- width must have to be same as qs_available_item width -->
+<!-- I kept the height as the image height -->
+<RelativeLayout
+    android:id="@+id/qs_available_item_root_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="77dp"
+    android:layout_height="45dp" />

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- this view will have a little circle inside -->
+<!-- but the width and height are the matter -->
+<!-- they must have to be same as qs_current_item width and height -->
+<!-- I also keep them as in the qs_current_item -->
+<RelativeLayout
+    android:id="@+id/qs_current_item_root_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="53dp"
+    android:layout_height="53dp"
+    android:background="#AAAAAA">
+
+    <View
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/qs_current_item_dummy_background"/>
+
+</RelativeLayout>

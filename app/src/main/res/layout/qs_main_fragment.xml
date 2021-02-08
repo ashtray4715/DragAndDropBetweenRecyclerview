@@ -26,47 +26,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:text="Drag and drop items"
-                android:textSize="15sp"
+                android:text="Drag icons to reorder them."
+                android:textSize="14sp"
                 android:textColor="#000000"
                 android:gravity="center"
                 tools:ignore="HardcodedText"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"/>
+                android:paddingLeft="24dp"
+                android:paddingStart="24dp"
+                android:paddingRight="24dp"
+                android:paddingEnd="24dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="14dp"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_available_items"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/title_drag_and_drop_items"
-                app:cardCornerRadius="20dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp">
+                app:cardCornerRadius="26dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
 
                     <TextView
                         android:id="@+id/title_available_items"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:text="Available items"
-                        android:textSize="15sp"
-                        android:textColor="#000000"
+                        android:text="Add items"
+                        android:textSize="16sp"
+                        android:textColor="#252525"
                         tools:ignore="HardcodedText"
-                        android:paddingLeft="10dp"
-                        android:paddingStart="10dp"
-                        android:paddingRight="0dp"
-                        android:paddingEnd="0dp"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"/>
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_available_items"
-                        android:layout_width="wrap_content"
-                        android:layout_height="100dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/title_available_items"
                         android:orientation="horizontal"/>
 
@@ -154,8 +155,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_current_items"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
                 android:orientation="horizontal"/>
 
         </RelativeLayout>

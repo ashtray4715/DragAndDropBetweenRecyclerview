@@ -41,7 +41,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             View v = new View(context);
             return new HeaderViewHolder(v);
         } else if(viewType == QSConstant.QSItem_TYPE_DUMMY) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_dummy_item, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_current_item_dummy, parent, false);
             return new DummyViewHolder(v);
         } else {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.qs_current_item, parent, false);
