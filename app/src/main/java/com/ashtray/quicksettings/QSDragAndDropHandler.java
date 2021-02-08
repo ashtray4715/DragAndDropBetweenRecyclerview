@@ -26,6 +26,9 @@ public class QSDragAndDropHandler implements View.OnDragListener {
     private QSItem draggableItem;
     private int draggableItemPosition;
 
+    private boolean dragCanStart = true;
+    private boolean dragCanEnd = false;
+
     /**
      * -1 = doesn't enter anywhere (DRAG_ENTERED_INTO_NO_WHERE)
      * 0 = enter into available list (DRAG_ENTERED_INTO_AVAILABLE_ITEM_RECYCLE_VIEW)
@@ -61,6 +64,11 @@ public class QSDragAndDropHandler implements View.OnDragListener {
     }
 
     private void handleDragStarted(View v, DragEvent event) {
+        if(!dragCanStart) {
+            return;
+        }
+        dragCanStart = false;
+        dragCanEnd = true;
         currentItemRecyclerViewId = RECYCLER_VIEW_ID_NOT_FOUND;
         availableItemRecyclerViewId = RECYCLER_VIEW_ID_NOT_FOUND;
         dragEnteredCallFirstTime = true;
@@ -110,10 +118,13 @@ public class QSDragAndDropHandler implements View.OnDragListener {
                     RecyclerView recyclerView = (RecyclerView) v;
                     QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
                     adapter.handleRemoveItem(dummyItemInsertedPosition);
-                    adapter.handleAddItem(draggableItemPosition);
+                    adapter.handleAddDummyItem(draggableItemPosition);
                     dummyItemInsertedPosition = draggableItemPosition;
                 } else {
-
+                    RecyclerView recyclerView = (RecyclerView) v;
+                    QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
+                    adapter.handleRemoveItem(dummyItemInsertedPosition);
+                    dummyItemInsertedPosition = DUMMY_ITEM_NOT_INSERTED;
                 }
             }
         }
@@ -134,13 +145,25 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             adapter.handleReplaceItem(dummyItemInsertedPosition, draggableItem);
             dummyItemInsertedPosition = DUMMY_ITEM_NOT_INSERTED;
         } else {
-
+            RecyclerView recyclerView = (RecyclerView) v;
+            QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
+            adapter.handleReplaceItem(dummyItemInsertedPosition, draggableItem);
+            dummyItemInsertedPosition = DUMMY_ITEM_NOT_INSERTED;
         }
     }
 
     private void handleDragEnded(View v, DragEvent event) {
-        Log.d(TAG, "handleDragEnded: called");
+        if(!dragCanEnd) {
+            return;
+        }
+        dragCanEnd = false;
+        dragCanStart = true;
         if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
+            if(!dragStartedFromCurrentItemList) {
+                RecyclerView recyclerView = (RecyclerView) v;
+                QSAvailableListAdapter adapter = (QSAvailableListAdapter) recyclerView.getAdapter();
+                adapter.handleReplaceItem(draggableItemPosition, draggableItem);
+            }
             return;
         }
         if(dragStartedFromCurrentItemList) {
@@ -154,6 +177,24 @@ public class QSDragAndDropHandler implements View.OnDragListener {
     }
 
     private void handleDragLocation(View v, DragEvent event) {
+        if(dragEnteredIntoRecyclerView == DRAG_ENTERED_INTO_AVAILABLE_ITEM_RECYCLE_VIEW) {
+            if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
+                if(!dragStartedFromCurrentItemList) {
+                    RecyclerView recyclerView = (RecyclerView) v;
+                    View onTopOfView = recyclerView.findChildViewUnder(event.getX(), event.getY());
+                    if(onTopOfView == null) {
+                        return;
+                    }
+
+                    int currentPosition = recyclerView.getChildAdapterPosition(onTopOfView);
+                    QSAvailableListAdapter adapter = (QSAvailableListAdapter) recyclerView.getAdapter();
+                    draggableItem = adapter.getItemFromPosition(currentPosition);
+                    draggableItemPosition = currentPosition;
+                    adapter.handleReplaceWithDummyItem(draggableItemPosition);
+                    return;
+                }
+            }
+        }
         if(dragEnteredIntoRecyclerView != DRAG_ENTERED_INTO_CURRENT_ITEM_RECYCLE_VIEW) {
             return;
         }
@@ -184,18 +225,47 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             draggableItem = adapter.getItemFromPosition(currentPosition);
             draggableItemPosition = currentPosition;
             adapter.handleRemoveItem(currentPosition);
-            adapter.handleAddItem(currentPosition);
+            adapter.handleAddDummyItem(currentPosition);
             dummyItemInsertedPosition = currentPosition;
-        } else if(dummyItemInsertedPosition != currentPosition) {
-            QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
-            adapter.handleRemoveItem(dummyItemInsertedPosition);
-            adapter.handleAddItem(currentPosition);
-            dummyItemInsertedPosition = currentPosition;
+            return;
         }
 
+        //when dummy already inserted and
+        //dummy not inserted in current position
+        //we have a check above already
+        QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
+        adapter.handleRemoveItem(dummyItemInsertedPosition);
+        adapter.handleAddDummyItem(currentPosition);
+        dummyItemInsertedPosition = currentPosition;
     }
 
     private void handleDragLocationAvailableToCurrent(View v, DragEvent event) {
+        RecyclerView recyclerView = (RecyclerView) v;
+        View selectedView = (View) event.getLocalState();
 
+        View onTopOfView = recyclerView.findChildViewUnder(event.getX(), event.getY());
+        if(onTopOfView == null) {
+            return;
+        }
+
+        int currentPosition = recyclerView.getChildAdapterPosition(onTopOfView);
+        if(currentPosition < 3 || dummyItemInsertedPosition == currentPosition) {
+            // -1 for position invalid, (0,1,2) for header so less than 3 is invalid
+            return;
+        }
+
+        if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
+            QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
+            adapter.handleAddDummyItem(currentPosition);
+            dummyItemInsertedPosition = currentPosition;
+        }
+
+        //when dummy already inserted and
+        //dummy not inserted in current position
+        //we have a check above already
+        QSCurrentListAdapter adapter = (QSCurrentListAdapter) recyclerView.getAdapter();
+        adapter.handleRemoveItem(dummyItemInsertedPosition);
+        adapter.handleAddDummyItem(currentPosition);
+        dummyItemInsertedPosition = currentPosition;
     }
 }

@@ -44,6 +44,18 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
         return items.size();
     }
 
+    public QSItem getItemFromPosition(int position) {
+        return items.get(position);
+    }
+
+    public void handleReplaceWithDummyItem(int atPosition) {
+
+    }
+
+    public void handleReplaceItem(int atPosition, QSItem item) {
+
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
         private final TextView textView;
