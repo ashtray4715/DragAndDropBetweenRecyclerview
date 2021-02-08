@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.ashtray.quicksettings.QSViewModel" />
+            type="com.ashtray.quicksettings.ui.QSViewModel" />
     </data>
 
     <RelativeLayout

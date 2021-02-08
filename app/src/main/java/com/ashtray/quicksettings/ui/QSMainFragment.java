@@ -1,4 +1,4 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -16,6 +16,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.ashtray.quicksettings.helpers.QSAvailableListAdapter;
+import com.ashtray.quicksettings.helpers.QSCurrentListAdapter;
+import com.ashtray.quicksettings.helpers.QSDragAndDropHandler;
+import com.ashtray.quicksettings.R;
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
 
 public class QSMainFragment extends Fragment {

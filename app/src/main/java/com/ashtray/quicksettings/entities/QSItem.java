@@ -1,4 +1,4 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.entities;
 
 public class QSItem {
     public int type = QSConstant.QSItem_TYPE_ACTUAL;

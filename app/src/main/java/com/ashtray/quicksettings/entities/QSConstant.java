@@ -1,4 +1,4 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.entities;
 
 public class QSConstant {
     public static final int QSItem_TYPE_HEADER = 0;

@@ -1,6 +1,9 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.ui;
 
 import androidx.lifecycle.ViewModel;
+
+import com.ashtray.quicksettings.entities.QSConstant;
+import com.ashtray.quicksettings.entities.QSItem;
 
 import java.util.ArrayList;
 

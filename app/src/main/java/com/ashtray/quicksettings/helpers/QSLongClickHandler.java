@@ -1,4 +1,4 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.helpers;
 
 import android.content.ClipData;
 import android.content.ClipDescription;

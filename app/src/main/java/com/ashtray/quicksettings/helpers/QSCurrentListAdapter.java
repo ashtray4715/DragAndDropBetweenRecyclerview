@@ -1,4 +1,4 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.helpers;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ashtray.quicksettings.entities.QSConstant;
+import com.ashtray.quicksettings.entities.QSItem;
+import com.ashtray.quicksettings.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 

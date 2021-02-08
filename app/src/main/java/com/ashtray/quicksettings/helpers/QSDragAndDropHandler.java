@@ -1,10 +1,13 @@
-package com.ashtray.quicksettings;
+package com.ashtray.quicksettings.helpers;
 
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ashtray.quicksettings.entities.QSConstant;
+import com.ashtray.quicksettings.entities.QSItem;
 
 public class QSDragAndDropHandler implements View.OnDragListener {
     private static final String TAG = "[QSDragListener]";
