@@ -29,9 +29,19 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
     private final ArrayList<QSItem> items;
     private final Context context;
 
+    private CallBacks callBacks;
+
+    public interface CallBacks {
+        void onItemGetsDeleted(QSItem item);
+    }
+
     public QSCurrentListAdapter(Context context, ArrayList<QSItem> items) {
         this.items = items;
         this.context = context;
+    }
+
+    public void setCallBacks(CallBacks callBacks) {
+        this.callBacks = callBacks;
     }
 
     @NonNull
@@ -141,6 +151,7 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             super(itemView);
             this.imageView = itemView.findViewById(R.id.item_image);
             this.textView = itemView.findViewById(R.id.item_text);
+            itemView.findViewById(R.id.little_delete_button).setOnClickListener(v -> deleteItem());
 
             RelativeLayout relativeLayout = this.itemView.findViewById(R.id.qs_current_item_root_layout);
             relativeLayout.setOnLongClickListener(new QSLongClickHandler(QSConstant.QS_LABEL_CURRENT_ITEM));
@@ -165,8 +176,12 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             }
             Log.d(TAG, "deleteItem: position = " + position);
             if(position != -1) {
+                QSItem deletedItemCopy = items.get(position).getNewCopy();
                 items.remove(position);
                 notifyDataSetChanged();
+                if(callBacks != null) {
+                    callBacks.onItemGetsDeleted(deletedItemCopy);
+                }
             }
         }
 

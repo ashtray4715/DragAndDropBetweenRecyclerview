@@ -47,6 +47,11 @@ public class QSMainFragment extends Fragment {
         }
     };
 
+    private final QSCurrentListAdapter.CallBacks currentListAdapterCallBack = item -> {
+        Log.d(TAG, "onItemGetsDeleted: " + item);
+        // todo - need to implement
+    };
+
     private void updateActionBar(String title, boolean showBackButton) {
         Activity activity = getActivity();
         if(activity != null) {
@@ -83,6 +88,7 @@ public class QSMainFragment extends Fragment {
         updateActionBar("Quick settings", true);
 
         currentListAdapter = new QSCurrentListAdapter(getContext(), viewModel.getUpdatedCurrentList());
+        currentListAdapter.setCallBacks(currentListAdapterCallBack);
         availableListAdapter = new QSAvailableListAdapter(getContext(), viewModel.getUpdatedAvailableList());
         dragAndDropHandler = new QSDragAndDropHandler(currentListAdapter, availableListAdapter);
         dragAndDropHandler.setCallBacks(dragAndDropCallBack);
