@@ -15,6 +15,16 @@ public class QSItem {
         return newCopy;
     }
 
+    public QSItem setType(int type) {
+        this.type = type;
+        return this;
+    }
+
+    public QSItem setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     @NonNull
     @Override
     public String toString() {

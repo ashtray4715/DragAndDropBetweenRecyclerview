@@ -143,6 +143,10 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items.get(position);
     }
 
+    public ArrayList<QSItem> getUpdatedItemList() {
+        return items;
+    }
+
     class ItemViewHolder extends MyViewHolder {
         private final ImageView imageView;
         private final TextView textView;

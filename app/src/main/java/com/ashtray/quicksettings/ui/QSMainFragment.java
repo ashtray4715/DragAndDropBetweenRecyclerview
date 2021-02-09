@@ -16,11 +16,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.ashtray.quicksettings.entities.QSItem;
 import com.ashtray.quicksettings.helpers.QSAvailableListAdapter;
 import com.ashtray.quicksettings.helpers.QSCurrentListAdapter;
 import com.ashtray.quicksettings.helpers.QSDragAndDropHandler;
 import com.ashtray.quicksettings.R;
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
+
+import java.util.ArrayList;
 
 public class QSMainFragment extends Fragment {
 
@@ -33,23 +36,27 @@ public class QSMainFragment extends Fragment {
     private QSAvailableListAdapter availableListAdapter;
     private QSDragAndDropHandler dragAndDropHandler;
 
+    private boolean editModeStarted = false;
+
     private final QSDragAndDropHandler.CallBacks dragAndDropCallBack = new QSDragAndDropHandler.CallBacks() {
         @Override
         public void onStartDragging() {
             Log.d(TAG, "onStartDragging()");
-            // todo - need to implement
         }
 
         @Override
         public void onStopDragging() {
             Log.d(TAG, "onStopDragging()");
-            // todo - need to implement
+            updateEditModeIfThereIsAnyChange();
         }
     };
 
     private final QSCurrentListAdapter.CallBacks currentListAdapterCallBack = item -> {
         Log.d(TAG, "onItemGetsDeleted: " + item);
-        // todo - need to implement
+        //we need to add deleted item to available list last position and
+        //we need to update edit mode since we can have a change or vice-versa
+        availableListAdapter.handleAddItemToTheLastPosition(item);
+        updateEditModeIfThereIsAnyChange();
     };
 
     private void updateActionBar(String title, boolean showBackButton) {
@@ -95,6 +102,8 @@ public class QSMainFragment extends Fragment {
     }
 
     private void drawFragmentForTheFirstTime() {
+        binding.changesApplyOrCancelView.setVisibility(View.GONE);
+
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
@@ -114,27 +123,62 @@ public class QSMainFragment extends Fragment {
     }
 
     private void startEditMode() {
-        updateActionBar("Edit Main", false);
+        if(editModeStarted) {
+            return;
+        }
+        editModeStarted = true;
+        updateActionBar("Edit quick settings", false);
         binding.changesApplyOrCancelView.setVisibility(View.VISIBLE);
     }
 
     private void endEditMode() {
-        updateActionBar("Edit Main", true);
+        if(!editModeStarted) {
+            return;
+        }
+        editModeStarted = false;
+        updateActionBar("Quick settings", true);
         binding.changesApplyOrCancelView.setVisibility(View.GONE);
     }
 
     public void userWantToApplyChanges(View v) {
         Log.d(TAG, "userWantToApplyChanges()");
-        // update list in view model
-        currentListAdapter.notifyDataSetChanged();
-        currentListAdapter.printTheNameOneByOne();
+        // todo - need to complete this method
         endEditMode();
     }
 
     public void userWantToCancelChanges(View v) {
         Log.d(TAG, "userWantToCancelChanges()");
-        // update current lists
+        // todo - need to complete this method
         endEditMode();
+    }
+
+    private void updateEditModeIfThereIsAnyChange() {
+        if(isItemPositionChanged()) {
+            startEditMode();
+        } else {
+            endEditMode();
+        }
+    }
+
+    private boolean isItemPositionChanged() {
+        ArrayList<QSItem> previousCurrentList = viewModel.getUpdatedCurrentList();  // get this from live data dot value
+        ArrayList<QSItem> previousAvailableList = viewModel.getUpdatedAvailableList();  // get this from live data dot value
+        ArrayList<QSItem> updatedCurrentList = currentListAdapter.getUpdatedItemList();
+        ArrayList<QSItem> updatedAvailableList = availableListAdapter.getUpdatedItemList();
+
+        if(previousAvailableList.size() != updatedAvailableList.size()) {
+            return true; // available list size changed check
+        } else if(previousCurrentList.size() != updatedCurrentList.size()) {
+            return true; // current list size changed check (actually no need)
+        } else { // we have to match the name if any reorder happens
+            int currentListSize = updatedCurrentList.size();
+            for (int i = 0; i < currentListSize; i++) {
+                if (!previousCurrentList.get(i).name.equals(updatedCurrentList.get(i).name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

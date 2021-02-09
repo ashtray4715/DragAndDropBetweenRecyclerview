@@ -1,6 +1,7 @@
 package com.ashtray.quicksettings.helpers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableListAdapter.BaseViewHolder> {
+
+    private static final String TAG = "[QSAvailableAdapter]";
 
     private final Context context;
     private final ArrayList<QSItem> items;
@@ -58,10 +61,6 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
         return items.get(position).type;
     }
 
-    public QSItem getItemFromPosition(int position) {
-        return items.get(position);
-    }
-
     public void handleReplaceWithDummyItem(int atPosition) {
         if(items.size() > atPosition) {
             items.get(atPosition).type = QSConstant.QSItem_TYPE_DUMMY;
@@ -84,6 +83,20 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
             items.remove(position);
             notifyDataSetChanged();
         }
+    }
+
+    public void handleAddItemToTheLastPosition(QSItem item) {
+        Log.d(TAG, "handleAddItemToTheLastPosition: "+ items.size() + ", " + item);
+        items.add(item);
+        notifyDataSetChanged();
+    }
+
+    public QSItem getItemFromPosition(int position) {
+        return items.get(position);
+    }
+
+    public ArrayList<QSItem> getUpdatedItemList() {
+        return items;
     }
 
     class ItemViewHolder extends BaseViewHolder {
