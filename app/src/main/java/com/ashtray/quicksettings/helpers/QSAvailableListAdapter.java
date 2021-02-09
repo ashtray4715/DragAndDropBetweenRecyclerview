@@ -64,7 +64,8 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
     public void handleReplaceWithDummyItem(int atPosition) {
         if(items.size() > atPosition) {
             items.get(atPosition).type = QSConstant.QSItem_TYPE_DUMMY;
-            items.get(atPosition).name = "D";
+            items.get(atPosition).name = QSConstant.QSItem_NAME_DUMMY;
+            items.get(atPosition).imageUrl = QSConstant.QSItem_IMAGE_URL_DUMMY;
             notifyItemChanged(atPosition);
         }
     }
@@ -122,7 +123,6 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
     }
 
     static class DummyViewHolder extends BaseViewHolder {
-
         public DummyViewHolder(@NonNull View itemView) {
             super(itemView);
         }

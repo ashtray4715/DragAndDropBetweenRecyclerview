@@ -95,13 +95,10 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
     }
 
     public void handleAddDummyItem(int atPosition) {
-        QSItem item = new QSItem();
-        item.type = QSConstant.QSItem_TYPE_DUMMY;
-        item.name = "D";
         if(items.size() > atPosition) {
-            items.add(atPosition, item);
+            items.add(atPosition, QSConstant.newDummyItem());
         } else {
-            items.add(item);
+            items.add(QSConstant.newDummyItem());
         }
         notifyDataSetChanged();
     }
