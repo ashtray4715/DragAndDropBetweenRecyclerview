@@ -74,12 +74,13 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items.get(position).type;
     }
 
-    public boolean handleMoveItem(RecyclerView.ViewHolder source, RecyclerView.ViewHolder destination) {
-        if (source.getItemViewType() != destination.getItemViewType()) {
-            return false;
-        }
-        int fromPosition = source.getAdapterPosition(), toPosition = destination.getAdapterPosition();
-        Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
+    public boolean handleMoveItem(int fromPosition, int toPosition) {
+    //public boolean handleMoveItem(RecyclerView.ViewHolder source, RecyclerView.ViewHolder destination) {
+            //if (source.getItemViewType() != destination.getItemViewType()) {
+        //    return false;
+        //}
+        //int fromPosition = source.getAdapterPosition(), toPosition = destination.getAdapterPosition();
+        //Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
         if(fromPosition < toPosition) {
             for(int i=fromPosition; i<toPosition; i++) {
                 Collections.swap(items, i, i+1);
@@ -90,42 +91,25 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             }
         }
         notifyItemMoved(fromPosition, toPosition);
-        printTheNameOneByOne();
+        //printTheNameOneByOne();
         return true;
     }
 
-    public void handleAddDummyItem(int atPosition) {
-        if(items.size() > atPosition) {
-            items.add(atPosition, QSConstant.newDummyItem());
-        } else {
-            items.add(QSConstant.newDummyItem());
-        }
-        notifyDataSetChanged();
-    }
-
-    public void handleAddItem(int draggableItemPosition, QSItem draggableItem) {
-        if(items.size() > draggableItemPosition) {
-            items.add(draggableItemPosition, draggableItem);
-        } else {
-            items.add(draggableItem);
-        }
-        notifyDataSetChanged();
+    public void handleAddItem(int atPosition, QSItem draggableItem) {
+        items.add(atPosition, draggableItem);
+        notifyItemInserted(atPosition);
     }
 
     public void handleRemoveItem(int atPosition) {
-        if(items.size() > atPosition) {
-            items.remove(atPosition);
-            notifyDataSetChanged();
-        }
+        items.remove(atPosition);
+        notifyItemRemoved(atPosition);
     }
 
     public void handleReplaceItem(int position, QSItem item) {
-        if(items.size() > position) {
-            items.get(position).type = item.type;
-            items.get(position).name = item.name;
-            items.get(position).imageUrl = item.imageUrl;
-            notifyItemChanged(position);
-        }
+        items.get(position).type = item.type;
+        items.get(position).name = item.name;
+        items.get(position).imageUrl = item.imageUrl;
+        notifyItemChanged(position);
     }
 
     public void printTheNameOneByOne() {

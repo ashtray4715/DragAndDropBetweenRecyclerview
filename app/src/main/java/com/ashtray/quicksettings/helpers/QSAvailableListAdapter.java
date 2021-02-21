@@ -61,35 +61,22 @@ public class QSAvailableListAdapter extends RecyclerView.Adapter<QSAvailableList
         return items.get(position).type;
     }
 
-    public void handleReplaceWithDummyItem(int atPosition) {
-        if(items.size() > atPosition) {
-            items.get(atPosition).type = QSConstant.QSItem_TYPE_DUMMY;
-            items.get(atPosition).name = QSConstant.QSItem_NAME_DUMMY;
-            items.get(atPosition).imageUrl = QSConstant.QSItem_IMAGE_URL_DUMMY;
-            notifyItemChanged(atPosition);
-        }
-    }
-
     public void handleReplaceItem(int position, QSItem item) {
-        if(items.size() > position) {
-            items.get(position).type = item.type;
-            items.get(position).name = item.name;
-            items.get(position).imageUrl = item.imageUrl;
-            notifyItemChanged(position);
-        }
+        items.get(position).type = item.type;
+        items.get(position).name = item.name;
+        items.get(position).imageUrl = item.imageUrl;
+        notifyItemChanged(position);
     }
 
     public void handleRemoveItem(int position) {
-        if(items.size() > position) {
-            items.remove(position);
-            notifyDataSetChanged();
-        }
+        items.remove(position);
+        notifyItemRemoved(position);
     }
 
     public void handleAddItemToTheLastPosition(QSItem item) {
         Log.d(TAG, "handleAddItemToTheLastPosition: "+ items.size() + ", " + item);
         items.add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(items.size());
     }
 
     public QSItem getItemFromPosition(int position) {

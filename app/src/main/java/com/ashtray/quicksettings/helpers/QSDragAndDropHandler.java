@@ -151,7 +151,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
                 if(dragStartedFromCurrentItemList) {
                     Log.d(TAG, "handleDragExited: removing dummy item [" + dummyItemInsertedPosition + "], adding new dummy at draggable position " + draggableItemPosition + "]");
                     currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
-                    currentListAdapter.handleAddDummyItem(draggableItemPosition);
+                    currentListAdapter.handleAddItem(draggableItemPosition, QSConstant.newDummyItem());
                     dummyItemInsertedPosition = draggableItemPosition;
                 } else {
                     Log.d(TAG, "handleDragExited: removing dummy item [" + dummyItemInsertedPosition + "]");
@@ -223,7 +223,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
                         Log.d(TAG, "handleDragLocation: initializing draggable item from available list adapter [" + currentPosition + "]");
                         draggableItem = availableListAdapter.getItemFromPosition(currentPosition).getNewCopy();
                         draggableItemPosition = currentPosition;
-                        availableListAdapter.handleReplaceWithDummyItem(draggableItemPosition);
+                        availableListAdapter.handleReplaceItem(draggableItemPosition, QSConstant.newDummyItem());
                     }
                     return;
                 }
@@ -258,7 +258,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             draggableItemPosition = currentPosition;
             Log.d(TAG, "handleDragLocationC2C: need to insert dummy [pos = " + currentPosition + ", dragPos = " + draggableItemPosition + "]");
             currentListAdapter.handleRemoveItem(currentPosition);
-            currentListAdapter.handleAddDummyItem(currentPosition);
+            currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
             dummyItemInsertedPosition = currentPosition;
             return;
         }
@@ -268,7 +268,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         //we have a check above already
         Log.d(TAG, "handleDragLocationC2C: dummy item position update " + dummyItemInsertedPosition + " -> " + currentPosition);
         currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
-        currentListAdapter.handleAddDummyItem(currentPosition);
+        currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
         dummyItemInsertedPosition = currentPosition;
     }
 
@@ -282,7 +282,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             //in that case we have to first remove the dummy item
             if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
                 int currentPosition = currentListAdapter.getItemCount();
-                currentListAdapter.handleAddDummyItem(currentPosition);
+                currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
                 dummyItemInsertedPosition = currentPosition;
             } else {
                 if(dummyItemInsertedPosition == currentListAdapter.getItemCount() - 1) {
@@ -291,7 +291,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
                 }
                 currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
                 int currentPosition = currentListAdapter.getItemCount();
-                currentListAdapter.handleAddDummyItem(currentPosition);
+                currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
                 dummyItemInsertedPosition = currentPosition;
             }
             return;
@@ -305,7 +305,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
 
         if(dummyItemInsertedPosition == DUMMY_ITEM_NOT_INSERTED) {
             Log.d(TAG, "handleDragLocationA2C: need to insert dummy [pos = " + currentPosition + ", dragPos = " + draggableItemPosition + "]");
-            currentListAdapter.handleAddDummyItem(currentPosition);
+            currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
             dummyItemInsertedPosition = currentPosition;
         }
 
@@ -314,7 +314,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         //we have a check above already
         Log.d(TAG, "handleDragLocationA2C: dummy item position update " + dummyItemInsertedPosition + " -> " + currentPosition);
         currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
-        currentListAdapter.handleAddDummyItem(currentPosition);
+        currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
         dummyItemInsertedPosition = currentPosition;
     }
 }
