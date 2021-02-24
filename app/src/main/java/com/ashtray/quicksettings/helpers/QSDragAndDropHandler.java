@@ -257,8 +257,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
             draggableItem = currentListAdapter.getItemFromPosition(currentPosition).getNewCopy();
             draggableItemPosition = currentPosition;
             Log.d(TAG, "handleDragLocationC2C: need to insert dummy [pos = " + currentPosition + ", dragPos = " + draggableItemPosition + "]");
-            currentListAdapter.handleRemoveItem(currentPosition);
-            currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
+            currentListAdapter.handleReplaceItem(currentPosition, QSConstant.newDummyItem());
             dummyItemInsertedPosition = currentPosition;
             return;
         }
@@ -267,8 +266,7 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         //dummy not inserted in current position
         //we have a check above already
         Log.d(TAG, "handleDragLocationC2C: dummy item position update " + dummyItemInsertedPosition + " -> " + currentPosition);
-        currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
-        currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
+        currentListAdapter.handleMoveItem(dummyItemInsertedPosition, currentPosition);
         dummyItemInsertedPosition = currentPosition;
     }
 
@@ -313,8 +311,9 @@ public class QSDragAndDropHandler implements View.OnDragListener {
         //dummy not inserted in current position
         //we have a check above already
         Log.d(TAG, "handleDragLocationA2C: dummy item position update " + dummyItemInsertedPosition + " -> " + currentPosition);
-        currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
-        currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
+        //currentListAdapter.handleRemoveItem(dummyItemInsertedPosition);
+        //currentListAdapter.handleAddItem(currentPosition, QSConstant.newDummyItem());
+        currentListAdapter.handleMoveItem(dummyItemInsertedPosition, currentPosition);
         dummyItemInsertedPosition = currentPosition;
     }
 }

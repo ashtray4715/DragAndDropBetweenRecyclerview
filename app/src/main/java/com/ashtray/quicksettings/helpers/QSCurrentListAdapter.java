@@ -20,7 +20,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdapter.MyViewHolder> {
 
@@ -74,25 +73,11 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         return items.get(position).type;
     }
 
-    public boolean handleMoveItem(int fromPosition, int toPosition) {
-    //public boolean handleMoveItem(RecyclerView.ViewHolder source, RecyclerView.ViewHolder destination) {
-            //if (source.getItemViewType() != destination.getItemViewType()) {
-        //    return false;
-        //}
-        //int fromPosition = source.getAdapterPosition(), toPosition = destination.getAdapterPosition();
-        //Log.d(TAG, "onMove: "+ fromPosition + " -> " + toPosition);
-        if(fromPosition < toPosition) {
-            for(int i=fromPosition; i<toPosition; i++) {
-                Collections.swap(items, i, i+1);
-            }
-        } else {
-            for(int i=fromPosition; i>toPosition; i--) {
-                Collections.swap(items, i, i-1);
-            }
-        }
+    public void handleMoveItem(int fromPosition, int toPosition) {
+        QSItem copy = items.get(fromPosition).getNewCopy();
+        items.remove(fromPosition);
+        items.add(toPosition, copy);
         notifyItemMoved(fromPosition, toPosition);
-        //printTheNameOneByOne();
-        return true;
     }
 
     public void handleAddItem(int atPosition, QSItem draggableItem) {
