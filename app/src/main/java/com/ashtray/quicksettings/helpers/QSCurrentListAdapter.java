@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdapter.MyViewHolder> {
 
@@ -74,10 +75,18 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
     }
 
     public void handleMoveItem(int fromPosition, int toPosition) {
-        QSItem copy = items.get(fromPosition).getNewCopy();
-        items.remove(fromPosition);
-        items.add(toPosition, copy);
-        notifyItemMoved(fromPosition, toPosition);
+        if(fromPosition < toPosition) {
+            for(int i=fromPosition; i<toPosition; i++) {
+                Collections.swap(items, i, i+1);
+            }
+        } else {
+            for(int i=fromPosition; i>toPosition; i--) {
+                Collections.swap(items, i, i-1);
+            }
+        }
+        //notifyDataSetChanged();
+        notifyItemRemoved(fromPosition);
+        notifyItemInserted(toPosition);
     }
 
     public void handleAddItem(int atPosition, QSItem draggableItem) {
