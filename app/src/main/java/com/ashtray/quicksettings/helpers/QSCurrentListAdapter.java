@@ -155,8 +155,8 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             this.textView = itemView.findViewById(R.id.item_text);
             itemView.findViewById(R.id.little_delete_button).setOnClickListener(v -> deleteItem());
 
-            RelativeLayout relativeLayout = this.itemView.findViewById(R.id.qs_current_item_root_layout);
-            relativeLayout.setOnLongClickListener(new QSLongClickHandler(QSConstant.QS_LABEL_CURRENT_ITEM));
+            //RelativeLayout relativeLayout = this.itemView.findViewById(R.id.qs_current_item_root_layout);
+            //relativeLayout.setOnLongClickListener(new QSLongClickHandler(QSConstant.QS_LABEL_CURRENT_ITEM));
         }
 
         public void updateViewOnBind(Context context, int position) {

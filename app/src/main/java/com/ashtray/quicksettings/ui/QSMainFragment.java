@@ -13,7 +13,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.ashtray.quicksettings.entities.QSItem;
@@ -24,6 +26,8 @@ import com.ashtray.quicksettings.R;
 import com.ashtray.quicksettings.databinding.QsMainFragmentBinding;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class QSMainFragment extends Fragment {
 
@@ -108,7 +112,10 @@ public class QSMainFragment extends Fragment {
         layoutManager.setReverseLayout(true);
         binding.rvCurrentItems.setLayoutManager(layoutManager);
         binding.rvCurrentItems.setAdapter(currentListAdapter);
-        binding.rvCurrentItems.setOnDragListener(dragAndDropHandler);
+        //binding.rvCurrentItems.setOnDragListener(dragAndDropHandler);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(currentListSimpleCallBack);
+        itemTouchHelper.attachToRecyclerView(binding.rvCurrentItems);
 
         LinearLayoutManager llManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         llManager.setReverseLayout(false);
@@ -180,5 +187,36 @@ public class QSMainFragment extends Fragment {
         }
         return false;
     }
+
+    private static final int DRAG_DIRECTION = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.START | ItemTouchHelper.END;
+    private static final int SWIPE_DIRECTION = 0;
+
+    ItemTouchHelper.SimpleCallback currentListSimpleCallBack = new ItemTouchHelper.SimpleCallback(DRAG_DIRECTION, SWIPE_DIRECTION) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder fromVH, @NonNull RecyclerView.ViewHolder toVH) {
+            int fromPosition = fromVH.getAdapterPosition();
+            int toPosition = toVH.getAdapterPosition();
+            if(Math.min(fromPosition, toPosition) < 3) {
+                return false;
+            }
+
+            if(fromPosition < toPosition) {
+                for(int i=fromPosition;i<toPosition;i++) {
+                    Collections.swap(currentListAdapter.getUpdatedItemList(), i, i+1);
+                }
+            } else {
+                for(int i=fromPosition;i>toPosition;i--) {
+                    Collections.swap(currentListAdapter.getUpdatedItemList(), i, i-1);
+                }
+            }
+            rv.getAdapter().notifyItemMoved(fromPosition, toPosition);
+            return true;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+
+        }
+    };
 
 }
