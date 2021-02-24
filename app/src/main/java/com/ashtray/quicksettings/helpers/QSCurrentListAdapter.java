@@ -85,8 +85,9 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
             }
         }
         //notifyDataSetChanged();
-        notifyItemRemoved(fromPosition);
-        notifyItemInserted(toPosition);
+        //notifyItemRemoved(fromPosition);
+        //notifyItemInserted(toPosition);
+        notifyItemMoved(fromPosition, toPosition);
     }
 
     public void handleAddItem(int atPosition, QSItem draggableItem) {
@@ -125,7 +126,6 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
     class ItemViewHolder extends MyViewHolder {
         private final ImageView imageView;
         private final TextView textView;
-        int position = -1;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -138,7 +138,6 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         }
 
         public void updateViewOnBind(Context context, int position) {
-            this.position = position;
             Glide.with(context)
                     .load(items.get(position).imageUrl)
                     .apply(new RequestOptions().placeholder(R.drawable.ic_launcher_background))
@@ -147,14 +146,12 @@ public class QSCurrentListAdapter extends RecyclerView.Adapter<QSCurrentListAdap
         }
 
         public void deleteItem() {
-            Log.d(TAG, "deleteItem: position = " + position);
-            if(position != -1) {
-                QSItem deletedItemCopy = items.get(position).getNewCopy();
-                items.remove(position);
-                notifyDataSetChanged();
-                if(callBacks != null) {
-                    callBacks.onItemGetsDeleted(deletedItemCopy);
-                }
+            int position = this.getAdapterPosition();
+            QSItem deletedItemCopy = items.get(position).getNewCopy();
+            items.remove(position);
+            notifyItemRemoved(position);
+            if(callBacks != null) {
+                callBacks.onItemGetsDeleted(deletedItemCopy);
             }
         }
 
